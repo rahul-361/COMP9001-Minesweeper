@@ -26,6 +26,15 @@ The main objective of the game is to find all the mines.
 ## HOW TO RUN
 - Clone the Git repository
 - Run driver.py
-
+  
 Requires `Python3.x`    
-No external libraries required 
+No external libraries required
+
+## PROJECT STRUCTURE
+```
+Minesweeper/
+├── driver.py   # Main script to run the game 
+├── mines.py    # Classes and grids
+└── README.md   # Project documentation
+```
+Source Code available at : https://github.com/rahul-361/COMP9001-Minesweeper
