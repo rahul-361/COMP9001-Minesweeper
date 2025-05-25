@@ -2,17 +2,29 @@
 
 from mines import Grid
 import os
+import time 
 
-#calling this function will clear the terminal  
-#great for showing real time changes in the grid
+'''
+This is the main code file that runs the game, It imports the Grid class form mines.py
+and creates an object of the class based on user inputs on difficulty level.
+Time module is imported to keep track of the time taken to beat the game (score)
+'''
+
 def clear_terminal():
+    '''
+    calling this function will clear the terminal  
+    great for showing real time changes in the grid
+    '''
     os.system('cls' if os.name == 'nt' else 'clear')
+
+
+
 if __name__ == '__main__':
-
-
 
     diff_levels = {'easy':(10,10),'medium':(15,40),'hard':(20,60),'expert':(20,85)}
     os.system('cls' if os.name == 'nt' else 'clear')
+    
+    #Main Menu
     print('\t+-------------------------------------+')
     print('\t|      Welcome to MINESWEEPER 💣      |')
     print('\t+-------------------------------------+')
@@ -28,7 +40,7 @@ if __name__ == '__main__':
     | Expert     | 20x20 Grid with 85 mines   |
     +------------+----------------------------+''')
 
-    
+    # 4 chances to enter difficulty, will default otherwise to easy
     chances = 4
     while chances:
         difficulty = input("\nChoose your difficulty: ").strip().lower()
@@ -38,6 +50,7 @@ if __name__ == '__main__':
             continue
         break
 
+    #default choice
     if chances == 0:
         difficulty = 'easy'
         print('\nDefault Difficulty set: Easy')
@@ -49,8 +62,9 @@ if __name__ == '__main__':
     n = diff_levels[difficulty][0]
     m = diff_levels[difficulty][1]
     
+    #generating the grid and mines
     mine_map = Grid(n,m)
-    #mine_map.display()
+    
     clear_terminal()
     print('\t\t+-------------------------------------+')
     print('\t\t|      Welcome to MINESWEEPER 💣      |')
@@ -59,19 +73,24 @@ if __name__ == '__main__':
     valid_cmd = {'f':'Flag','r':'Revealing','rf':'Remove Flag'}
     print('Instructions: Enter the coordinates and action in the following format: <x> <y> <action>\n')
     instructions = '''                        Valid Actions
-    +------+-------------------------+-----------------+---------------+
-    | Cmd  | Description             | Format          | Example       |
-    +------+-------------------------+-----------------+---------------+
-    | f    | Place a flag at (x,y)   | <x> <y> f       | 1 2 f         |
-    | r    | Reveal the cell (x,y)   | <x> <y> r       | 4 5 r         |
-    | rf   | Remove a placed flag    | <x> <y> rf      | 3 6 rf        |
-    | q    | Quit the game           | q               | q             |
-    | help | Show instructions       | help            | help          |
-    +------+-------------------------+-----------------+---------------+
+    +------+---------------------------+-----------------+---------------+
+    | Cmd  | Description               | Format          | Example       |
+    +------+---------------------------+-----------------+---------------+
+    | f    | Place a flag (⚑) at (x,y) | <x> <y> f       | 1 2 f         |
+    | r    | Reveal the cell (x,y)     | <x> <y> r       | 4 5 r         |
+    | rf   | Remove a placed flag      | <x> <y> rf      | 3 6 rf        |
+    | q    | Quit the game             | q               | q             |
+    | help | Show instructions         | help            | help          |
+    +------+---------------------------+-----------------+---------------+
     
 Other than the flag and reveal options, you dont need to enter coordinates for the rest'''
     print(instructions)
     input("\nPRESS ENTER START THE GAME ")
+
+    #timer starts
+    s_time = time.time()
+
+    #Game starts
     while True:
         clear_terminal()
         mine_map.display()
@@ -108,8 +127,9 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
             print('Oops. Please enter numerical coordinates. If you need help, type \'help\' ')
             input("\nPRESS ENTER TO CONTINUE ")
             continue
-        if x not in range(n) and y not in range(n):
-            print(f'Oops. It seems like the coordinates are invalid. Try to enter coordinates in the range (0 to {n}).\nIf you need help, type \'help\' ')
+
+        if x not in range(n) or y not in range(n):
+            print(f'Oops. It seems like the coordinates are invalid. Try to enter coordinates in the range (1 to {n}).\nIf you need help, type \'help\' ')
             input("\nPRESS ENTER TO CONTINUE ")
             continue
         
@@ -125,6 +145,10 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
             continue
         
         if act == 'f':
+            if mine_map.no_flags_left():
+                print('\nYou have run out of flags. Please remove an exisitng flag using the \'rf\' command to place another flag')
+                input("\nPRESS ENTER TO CONTINUE ")
+                continue
             if mine_map.place_flag(x,y):
                 clear_terminal()
                 mine_map.display()
@@ -154,19 +178,29 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
                 print('Please remove the flag using the \'rf\' command first.')
                 input("\nPRESS ENTER TO CONTINUE ")
                 continue
+
             if mine_map.reveal(x,y):
                 #reveal returns True for all cases excpet a mine epxlosion
+
                 if mine_map.check_win():
                     clear_terminal()
                     mine_map.display()
                     print('\n!!!!CONGRATULATIONS!!!!')
                     print('You have won the game')
+                    e_time = time.time()
+                    score = e_time - s_time
+                    minutes = int(score / 60)
+                    seconds = int(score % 60)
+                    print(f'Time take to beat game: {minutes} miuntes and {seconds} seconds ')
                     try_again = input("\nDo you want to play again (y/n):  ").strip().lower()
+
                     if try_again == 'y':
                         mine_map = Grid(n,m)
                         print(f'\nGenerated a {n}x{n} grid with new mine posttions.')
                         input("\nPRESS ENTER TO RESTART ")
+                        s_time = time.time()
                         continue
+
                     else:
                         print('\nExiting the game. Hope to see you again.\n')
                         break
@@ -177,18 +211,27 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
                 mine_map.display()
                 print(f'\nMINE EXPLODED AT ({x+1},{y+1})')
                 print('**** GAME OVER ****')
+                e_time = time.time()
+                score = e_time - s_time
+                minutes = int(score / 60)
+                seconds = int(score % 60)
+                print(f'Time Elapsed: {minutes} miuntes and {seconds} seconds ')
+
                 try_again = input("\nDo you want to try again (y/n):  ").strip().lower()
+
                 if try_again == 'y':
                     try_again = input("\nDo you the same grid? (y/n):  ").strip().lower()
                     if try_again == 'n':
                         mine_map = Grid(n,m)
                         print(f'\nGenerated a {n}x{n} grid with new mine posttions.')
                         input("\nPRESS ENTER TO RESTART ")
+                        s_time = time.time()
                         continue
                     else:
                         mine_map.reset_grid()
                         print('\nRestarting with the same grid.')
                         input("\nPRESS ENTER TO RESTART ")
+                        s_time = time.time()
                         continue
                         
                 else:
@@ -198,16 +241,3 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
         # print('That is an invalid move. If you need help, type \'help\' ')
         # input("\nPRESS ENTER TO CONTINUE ")
         # continue
-
-
-        
-        
-        
-
-
-
-        
-    
-
-
- 
