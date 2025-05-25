@@ -1,5 +1,5 @@
 # COMP9001-Minesweeper 💣 
-Classic Minesweeper reimagined in Python as a interactive command-line input game. 
+Classic Minesweeper reimagined in Python as a interactive command-line input game. Find all the hidden mines in the board to win the game. 
 
 ## FEATURES
 - Random and independent palcement of mines in the grid
@@ -14,13 +14,13 @@ Once the game starts and displays the grid, you can enter your command or action
 `<x coordinate> <y coordinate> <action>`
   
 Valid commands : 
-| Command | Description | Format | Example |
-|----------|----------|----------|----------|
-| f | Place a flag (⚑) at (x,y)| x y  f       | 1 2 f         |
-| r    | Reveal the cell (x,y)     | x y r    | 4 5 r         |
-| rf   | Remove a placed flag      | x y rf    | 3 6 rf        |
-| q    | Quit the game             | q            | q             |
-| help | Show instructions         | help      | help          |
+| Command |        Description        | Format   | Example |
+|---------|---------------------------|----------|----------|
+| f       | Place a flag (⚑) at (x,y) | x y  f   | 1 2 f    |
+| r       | Reveal the tile (x,y)     | x y r    | 4 5 r    |
+| rf      | Remove a placed flag      | x y rf   | 3 6 rf   |
+| q       | Quit the game             | q        | q        |
+| help    | Show instructions         | help     | help     |
 
 The main objective of the game is to find all the mines.
 ## HOW TO RUN
