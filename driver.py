@@ -85,6 +85,7 @@ if __name__ == '__main__':
     
 Other than the flag and reveal options, you dont need to enter coordinates for the rest'''
     print(instructions)
+    print('\nPLEASE MAXIMISE YOUR TERMINAL WINDOW TO ACCOMODATE THE BOARD')
     input("\nPRESS ENTER START THE GAME ")
 
     #timer starts
