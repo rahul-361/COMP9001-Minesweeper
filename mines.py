@@ -226,8 +226,8 @@ class Grid:
 
 if __name__ == '__main__':
     #debugging       
-    g = Grid(30,20)
-    g.display()
+    #g = Grid(30,20)
+    #g.display()
         
 
         
