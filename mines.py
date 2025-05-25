@@ -35,6 +35,7 @@ class Grid:
         for i in range(self.n):
             for j in range(self.n):
                 self.grid_2[i][j] = '■'
+        self.flags = self.m
     #end of reset_grid
 
     def populate(self):
@@ -154,12 +155,18 @@ class Grid:
         for i in range(self.n):
             print(f'{i+1:^3}│', end='')
             for j in range(self.n):
+                if self.grid_2[i][j] in ('💥','💣') :
+                    print(f'{self.grid_2[i][j]} │', end='')
+                    continue
+                if self.grid_2[i][j] == '⚑' :
+                    print(f'🚩 │', end='')
+                    continue
                 print(f'{self.grid_2[i][j]:^3}│', end='')
             print()
             if i < self.n - 1:
                 print('   ├' + '───┼' * (self.n - 1) + '───┤')
         print('   └' + '───┴' * (self.n - 1) + '───┘')
-        
+
     #end of display
 
 
@@ -199,6 +206,15 @@ class Grid:
         return True
     #end of reveal
 
+    def map_lose(self):
+        '''
+        Reveal mine postions on explosion
+        '''
+        for i in range(self.n):
+            for j in range(self.n):
+                if self.grid_2[i][j] in ('■','⚑') and self.grid_1[i][j] == '*':
+                    self.grid_2[i][j] = '💣'
+    #end of map_lose
 
     def check_win(self):
         '''
@@ -217,7 +233,7 @@ class Grid:
             for i in range(self.n):
                 for j in range(self.n):
                     if self.grid_2[i][j] in ('■','⚑'):
-                        self.grid_2[i][j] = '*'
+                        self.grid_2[i][j] = '💣'
                     
             return True
         

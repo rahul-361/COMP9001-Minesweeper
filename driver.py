@@ -29,7 +29,7 @@ if __name__ == '__main__':
     print('\t|      Welcome to MINESWEEPER 💣      |')
     print('\t+-------------------------------------+')
     print('\nYou can choose a difficulty from the table below')
-    print('The difficultyyou choose will determine the size of your grid and the number of mines in it')
+    print('The difficulty you choose will determine the size of your board and the number of mines in it')
     print('''
     +------------+----------------------------+
     | Difficulty | Description                |
@@ -209,6 +209,7 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
             else:
                 #reaveal return False when a mine has exploded
                 clear_terminal()
+                mine_map.map_lose()
                 mine_map.display()
                 print(f'\nMINE EXPLODED AT ({x+1},{y+1})')
                 print('**** GAME OVER ****')
@@ -224,7 +225,7 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
                     try_again = input("\nDo you the same grid? (y/n):  ").strip().lower()
                     if try_again == 'n':
                         mine_map = Grid(n,m)
-                        print(f'\nGenerated a {n}x{n} grid with new mine posttions.')
+                        print(f'\nGenerated a {n}x{n} grid with new mine positions.')
                         input("\nPRESS ENTER TO RESTART ")
                         s_time = time.time()
                         continue
@@ -238,4 +239,4 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
                 else:
                     print('\nExiting the game. Hope to see you again.\n')
                     break
-  
+
