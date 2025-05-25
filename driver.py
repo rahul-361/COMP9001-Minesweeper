@@ -237,7 +237,4 @@ Other than the flag and reveal options, you dont need to enter coordinates for t
                 else:
                     print('\nExiting the game. Hope to see you again.\n')
                     break
-        
-        # print('That is an invalid move. If you need help, type \'help\' ')
-        # input("\nPRESS ENTER TO CONTINUE ")
-        # continue
+  
